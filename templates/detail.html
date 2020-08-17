@@ -1,0 +1,199 @@
+<html>
+
+<head>
+  <title>Data Slicer</title>
+
+
+  <!-- d3 core min -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.5.17/d3.min.js"></script>
+
+  <!-- violin scripts -->
+  <script src="{{ url_for('static', filename = 'js/violin.js')}}"></script>
+  <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/violin.css') }}" />
+
+
+  <link href="{{ url_for('static', filename = 'css/new-age.min.css') }}" rel="stylesheet">
+
+  <!-- confusion matrix -->
+  <script src="{{ url_for('static', filename = 'js/cm.js')}}"></script>
+
+</head>
+
+
+
+<style>
+  .row {
+    display: flex;
+  }
+
+  /* Create two equal columns that sits next to each other */
+  .column {
+    flex: 10%;
+    padding: 10px;
+  }
+
+  .col2 {
+    flex: 90%;
+    padding: 10px;
+  }
+
+
+  table {
+    border-collapse: collapse;
+    margin: 20px;
+    margin-top: 50px;
+  }
+
+  table,
+  th,
+  td {
+    border: 1px solid black;
+  }
+
+  .block {
+
+    border-radius: 5px;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background-color: white;
+    padding: 10px;
+  }
+</style>
+
+
+
+
+<body style="background-color: cornsilk;">
+
+
+  <div style="width: 100%; height: 50px; background-color: #262626; color: white; margin: 0px; ">
+    <h3 style="margin-top: 0; margin-left: 10px;padding-top: 10px;">Data Slicer</h3>
+  </div>
+
+
+  <div class="row">
+    <div class="column" style="background-color:whitesmoke">
+    </div>
+
+
+
+
+
+    <div class="col2">
+      <div class="block">
+        <h3> Slice Description</h3>
+        {% for j in op_para["slice_des"] %}
+        <h4> {{ j }}</h4>
+        {% endfor %}
+
+      </div>
+
+
+
+      <div class="block">
+
+        <div class="col-lg-10 g_graph" id="violin"></div>
+
+      </div>
+
+
+      <div class="block">
+
+
+        <table>
+
+          <tr>
+            <div style="display:inline-block; float:left" id="container"></div>
+            <div style="display:inline-block; float:left" id="legend"></div>
+          </tr>
+
+          <tr>
+
+            <div>
+              <table>
+                <tr>
+                  <th>Accuracy</th>
+                  <th>Precision</th>
+                  <th>Recall</th>
+                  <th>F1</th>
+                </tr>
+                <tr>
+                  <td>{{ op_para["cmatrix"]["accuracy"] }}</td>
+                  <td>{{ op_para["cmatrix"]["precision"] }}</td>
+                  <td>{{ op_para["cmatrix"]["recall"] }}</td>
+                  <td>{{ op_para["cmatrix"]["f1"] }}</td>
+                </tr>
+
+              </table>
+            </div>
+          </tr>
+        </table>
+
+
+
+
+
+
+
+      </div>
+
+
+
+    </div>
+  </div>
+
+
+
+
+
+
+  <script>
+    var data = {{ op_para["v_data"] | tojson | safe }}
+    var container = "#violin"
+    dr({
+      container: container,
+      data: data
+    });
+
+  </script>
+
+  <script>
+
+    var confusionMatrix = [
+      [{{ op_para["cmatrix"]["tp"] }}, {{ op_para["cmatrix"]["fn"] }}],
+    [{{ op_para["cmatrix"]["fp"] }}, {{ op_para["cmatrix"]["tn"] }}]
+      ];
+    var labels = ['{{ op_para["class"][0] | safe}}', '{{ op_para["class"][1] | safe}}'];
+
+    var container = '#container'
+    var legend = '#legend'
+
+    Matrix({
+      container: container,
+      data: confusionMatrix,
+      labels: labels,
+      start_color: '#ffffff',
+      end_color: '#1034A6',
+      legend: legend
+    });
+
+
+
+
+  </script>
+
+
+
+
+
+
+  <footer>
+    <div class="container">
+      <p>&copy; Data Slicer 2020. All Rights Reserved.</p>
+    </div>
+  </footer>
+
+
+</html>

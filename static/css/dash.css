@@ -1,0 +1,21 @@
+@import url('https://fonts.googleapis.com/css?family=Muli&display=swap');
+.g_cont {
+    border-radius: 5px;
+    background-color: #2A265F;
+    color: white;
+    box-shadow: 0 10px 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+.g_des {
+    border-left: gray;
+    border-left-width: 4px;
+    font-family: 'Muli', sans-serif;
+    padding-top: 10px;
+}
+
+.g_graph {
+    background-color: white;
+}
