@@ -35,7 +35,7 @@ open it in any browser to start using data slicer
 data file sample is given in Folder ```data```
 is using custom data file:
 * make sure first line has column names
-* the class column(last column containing target value) should me named ```Target```
+* the class column(last column containing target value) should be named ```Target```
 
 ## Authors
 
