@@ -9,6 +9,7 @@ from src.Data_handler.datahandler import Datahandler
 from src.data_slicer.slice_finder import Slice, SliceFinder
 from src.model_selector import model_select
 from src.sf_main import run_slice_finder
+from src.pl_main import run_palm
 
 
 UPLOAD_FOLDER = './upload'
@@ -52,6 +53,7 @@ def upload_file():
 			global_data['file_name'] = file.filename
 			global_data['K'] = k
 			global_data['model_id'] = ml_model
+			# print(k,ml_model)
 			return redirect(url_for('load'))
 
 	global_data = {"flag" : False}
@@ -62,6 +64,8 @@ def upload_file():
 def load():
 	model = model_select(global_data['model_id'])
 	data_obj = Datahandler("upload/data.csv", model)
+	print(data_obj.target_types,type(data_obj.target_types),data_obj.target_types[0],data_obj.target_types[1])
+
 	global_data['data_obj'] = data_obj
 
 	return render_template("load.html")
@@ -78,6 +82,8 @@ def dashboard():
 	if (global_data["flag"] == False):
 		recommendations = run_slice_finder(data_obj, K=K)
 		global_data['recommendations'] = recommendations
+		palm_data = run_palm(K,data_obj)
+		global_data['palm'] = palm_data
 		global_data["flag"] = True
 
 	op_para = {}
@@ -93,6 +99,7 @@ def dashboard():
 
 	op_para["slice_des"] = slice_des
 	op_para['v_data'] = v_data
+	op_para['palm'] = global_data['palm']
 	return render_template("dashboard.html", op_para=op_para)
 
 

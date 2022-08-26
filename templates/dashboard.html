@@ -83,9 +83,36 @@
         {% endfor %}
 
 
+        <div class="row g_cont">
+
+            <div class="col-lg-2 g_des ">
+                
+                <p> IPALM Error wheel</p>
+                
+            </div>
+    
+                <div class="col-lg-10 g_graph" id="donut"></div>
+    
+            </div>
     </div>
 
 
+
+ 
+
+    <script>
+        var data = {{ op_para['palm'] | tojson | safe }};
+
+
+
+        var container = "#donut"
+
+        donut({
+            container: container,
+            data: data
+        })
+
+    </script>
     {% for i in range(op_para["K"]) %}
     <script>
         var data = {{ op_para["v_data"][i] | tojson | safe }}

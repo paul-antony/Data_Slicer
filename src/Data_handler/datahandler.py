@@ -154,6 +154,7 @@ class Datahandler:
 
 		y_p = self.model.predict(x)
 
+		print(y_t,y_p)
 
 		tn, fp, fn, tp = confusion_matrix(y_t, y_p).ravel()
 
